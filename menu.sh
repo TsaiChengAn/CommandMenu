@@ -6,7 +6,6 @@ DEVICE_NAME='0123456789ABCDEF'
 WARNING_MSG_1="Wrong Choice: Please choose the correct option"
 WARNING_MSG_2="Connection Fail: Please check the connection of your device"
 
-#Start the program
 function menu_show(){
     echo 'Choise an option'
     echo '0. Exit'
@@ -250,8 +249,8 @@ function menu_option_14(){
     adb.exe shell cat /sys/bus/i2c/drivers/tmp103_temp_sensor/2-0070/temp1_input
 }
 
+#Start the program
 check_adb_devices && adb.exe root || return 1
-
 while [ 1 ]
 do
     menu_show
