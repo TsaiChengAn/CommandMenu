@@ -1,6 +1,6 @@
 #!/bin/bash
 #Purpose:A menu for adb shell commands
-#Date:2022/1/10
+#Date:2022/1/11
 
 DEVICE_NAME='0123456789ABCDEF'
 WARNING_MSG_1="Wrong Choice: Please choose the correct option"
