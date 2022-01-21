@@ -1,7 +1,8 @@
 #!/bin/bash
 #Purpose:A menu for adb shell commands
-#Date:2022/1/11
+#Date:2022/1/21
 
+alias adb=adb.exe
 DEVICE_NAME='0123456789ABCDEF'
 WARNING_MSG_1="Wrong Choice: Please choose the correct option"
 WARNING_MSG_2="Connection Fail: Please check the connection of your device"
@@ -36,7 +37,7 @@ function menu_LED_num_show(){
 
 function menu_LED_color_show(){
     echo 'Select a LED color or 0 to exit'
-    echo '0. Exit';
+    echo '0. Exit'
     echo '1. Red'
     echo '2. Green'
     echo '3. Blue'
@@ -60,7 +61,7 @@ function check_out_of_index(){
 function check_adb_devices(){
     echo 'Checking connection of device ..'
     echo 'Please wait ..'
-    if ! (echo $(adb.exe devices) | grep ${DEVICE_NAME});then
+    if ! (echo $(adb devices) | grep ${DEVICE_NAME});then
 	echo
 	sleep 3
 	echo ${WARNING_MSG_2}
@@ -74,116 +75,116 @@ function check_adb_devices(){
 function menu_option_1(){	
     #Check Wifi MAC
     echo -e "\nReady to Check WiFi MAC ... "
-    adb.exe shell "mfgNvram r_wifi_mac"
+    adb shell "mfgNvram r_wifi_mac"
     #Check BT MAC
     echo -e "\nReady to Check BT MAC ... "
-    adb.exe shell "mfgNvram r_bt_mac"
+    adb shell "mfgNvram r_bt_mac"
     #Check MBSN
     echo -e "\nReady to Check MBSN ... "
-    adb.exe shell "mfgNvram r_pcbasn"
+    adb shell "mfgNvram r_pcbasn"
     #Check QSN
     echo -e "\nReady to Check QSN ... "	
-    adb.exe shell "mfgNvram r_qsn"
+    adb shell "mfgNvram r_qsn"
     #Check CSN
     echo -e "\nReady to Check CSN ... "
-    adb.exe shell "mfgNvram r_csn"	
+    adb shell "mfgNvram r_csn"	
     #Check WiFi Region
     echo -e "\nReady to Check WiFi Region ... "
-    adb.exe shell "mfgNvram r_wifi_cc"	
+    adb shell "mfgNvram r_wifi_cc"	
     #Check CPU ID
     echo -e "\nReady to Check CPU ID ... "
-    adb.exe shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /cpu_id/{print $2}'"	
+    adb shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /cpu_id/{print $2}'"	
     #Check MB Version(HW ID)
     echo -e "\nReady to Check MB Version(HW ID) ... "
-    adb.exe shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /board_rev/{print $2}'"
+    adb shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /board_rev/{print $2}'"
 }
 
 #Write QSN
 function menu_option_2(){
     echo -e "\nReady to Write QSN ... "
     read -p "Please enter the correct QSN: " QSN
-    adb.exe shell "mfgNvram w_qsn ${QSN}"
+    adb shell "mfgNvram w_qsn ${QSN}"
 }
 
 #Write CSN
 function menu_option_3(){
     echo -e "\nReady to Write CSN ... "
     read -p "Please enter the correct CSN: " CSN
-    adb.exe shell "mfgNvram w_csn ${CSN}"
+    adb shell "mfgNvram w_csn ${CSN}"
 }
 
 #Write WiFi Region
 function menu_option_4(){
     echo -e "\nReady to Write WiFi Region ... "
     read -p "Please enter the correct COUNTRY_CODE: " COUNTRY_CODE 
-    adb.exe shell "mfgNvram w_wifi_cc ${COUNTRY_CODE}"
+    adb shell "mfgNvram w_wifi_cc ${COUNTRY_CODE}"
 }
 
 #Check Image version
 function menu_option_5(){
     echo -e "\nReady to Check Image version ... "
-    adb.exe shell getprop ro.build.id
+    adb shell getprop ro.build.id
 }
 
 #eMMC name, eMMC type, eMMc size, eMMC Manufacture ID
 function menu_option_6(){	
     #eMMC name
     echo -e "\nReady to print eMMC name ... "
-    adb.exe shell cat /sys/bus/mmc/devices/mmc0\:0001/name
+    adb shell cat /sys/bus/mmc/devices/mmc0\:0001/name
     #eMMC type
     echo -e "\nReady to print eMMC type ... "
-    adb.exe shell cat /sys/bus/mmc/devices/mmc0\:0001/type
+    adb shell cat /sys/bus/mmc/devices/mmc0\:0001/type
     #eMMC size
     echo -e "\nReady to print eMMC size ... "
-    adb.exe shell cat /sys/bus/mmc/devices/mmc0\:0001/block/mmcblk0/size
+    adb shell cat /sys/bus/mmc/devices/mmc0\:0001/block/mmcblk0/size
     #eMMC Manufacture ID
     echo -e "\nReady to print eMMC Manufacture ID ... "
-    adb.exe shell  cat /sys/bus/mmc/devices/mmc0\:0001/manfid
+    adb shell  cat /sys/bus/mmc/devices/mmc0\:0001/manfid
 }
 
 #Check DDR size, DDR ID
 function menu_option_7(){
     #Check DDR size
     echo -e "\nReady to Check DDR size ... "
-    adb.exe shell "cat /proc/meminfo | awk '/MemTotal/{print $2}'"
+    adb shell "cat /proc/meminfo | awk '/MemTotal/{print $2}'"
     #Check DDR ID
     echo -e "\nReady to Check DDR ID ... "
-    adb.exe shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /ddr_id/{print $2}'"
+    adb shell "cat /proc/cmdline | awk 'BEGIN{RS=\" \"; FS=\"=\"} /ddr_id/{print $2}'"
 }
 
 #Check PMIC information
 function menu_option_8(){
     echo -e "\nReady to Check PMIC information ... "
-    adb.exe shell "echo 100 > /sys/bus/platform/devices/mt6397-pmic/pmic_access;
+    adb shell "echo 100 > /sys/bus/platform/devices/mt6397-pmic/pmic_access;
     cat /sys/bus/platform/devices/mt6397-pmic/pmic_access"
 }
 
 #Check ID
 function menu_option_9(){
     echo -e "\nReady to Check ID ... "
-    adb.exe shell "i2cget -f -y 4 0x6b 0x0F"
+    adb shell "i2cget -f -y 4 0x6b 0x0F"
 }
 
 #Power button
 function menu_option_10(){
     echo -e "\nReady to Power Button ... "
-    adb.exe root
-    adb.exe wait-for-device
-    adb.exe remount
-    adb.exe wait-for-device
-    adb.exe shell "timeout 10 sh /vendor/etc/power_key_test.sh; killall -9 getevent"
+    adb root
+    adb wait-for-device
+    adb remount
+    adb wait-for-device
+    adb shell "timeout 10 sh /vendor/etc/power_key_test.sh; killall -9 getevent"
 }
 
 #4 top cover buttons
 function menu_option_11(){
     echo -e "\nReady to 4 top cover buttons ... "
-    adb.exe root
-    adb.exe shell "for n in 119 122 123 124; do  echo mode $n 0 > /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio;\
+    adb root
+    adb shell "for n in 119 122 123 124; do  echo mode $n 0 > /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio;\
     echo dir $n 0 > /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio; done"
-    adb.exe shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 119"
-    adb.exe shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 122"
-    adb.exe shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 123"
-    adb.exe shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 124"
+    adb shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 119"
+    adb shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 122"
+    adb shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 123"
+    adb shell "cat /sys/bus/platform/devices/1000b000.pinctrl/mt_gpio | grep 124"
 }
 #LED option
 function menu_option_12(){
@@ -218,39 +219,39 @@ function menu_option_12(){
 	[[ $? != 0 ]] && break
 	LED_onoff="echo ${LED_onoff}"
 
-	adb.exe shell "${LED_onoff} > ${LED_num}${LED_color}"
+	adb shell "${LED_onoff} > ${LED_num}${LED_color}"
     done
 }
 
 function LED_alloff(){
-    adb.exe shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/2-0031/reset"
-    adb.exe shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/3-0030/reset"
-    adb.exe shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/3-0031/reset"
+    adb shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/2-0031/reset"
+    adb shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/3-0030/reset"
+    adb shell "echo 1 > /sys/bus/i2c/drivers/ktd202x/3-0031/reset"
 }
 
 function menu_option_13(){
     echo -e "\nReady to MIC1/MIC2 record ... "
-    adb.exe root
-    adb.exe shell "tinymix 'Stereo1 DMIC Mux' 'DMIC1'"
-    adb.exe shell "tinymix 'Stereo1 ADC L2 Mux' 'DMIC'"
-    adb.exe shell "tinymix 'Stereo1 ADC R2 Mux' 'DMIC'"
-    adb.exe shell "tinymix 'Stereo1 ADC MIXL ADC2 Switch' 1"
-    adb.exe shell "tinymix 'Stereo1 ADC MIXR ADC2 Switch' 1"
-    adb.exe shell "tinymix 'STO1 ADC Capture Volume' 100"
-    adb.exe shell  "tinycap /sdcard/m2_dmic.wav -d 8 -c 2 -r 48000 -T 6"
-    adb.exe pull /sdcard/m2_dmic.wav ~/m2_dmic.wav
+    adb root
+    adb shell "tinymix 'Stereo1 DMIC Mux' 'DMIC1'"
+    adb shell "tinymix 'Stereo1 ADC L2 Mux' 'DMIC'"
+    adb shell "tinymix 'Stereo1 ADC R2 Mux' 'DMIC'"
+    adb shell "tinymix 'Stereo1 ADC MIXL ADC2 Switch' 1"
+    adb shell "tinymix 'Stereo1 ADC MIXR ADC2 Switch' 1"
+    adb shell "tinymix 'STO1 ADC Capture Volume' 100"
+    adb shell  "tinycap /sdcard/m2_dmic.wav -d 8 -c 2 -r 48000 -T 6"
+    adb pull /sdcard/m2_dmic.wav ~/m2_dmic.wav
 }
 
 #Check MB/CB Thermal sensor temperature
 function menu_option_14(){
     echo -e "\nReady to Check MB Thermal sensor temperature ... "
-    adb.exe shell cat /sys/bus/i2c/drivers/tmp103_temp_sensor/4-0070/temp1_input
+    adb shell cat /sys/bus/i2c/drivers/tmp103_temp_sensor/4-0070/temp1_input
     echo -e "\nReady to Check CB Thermal sensor temperature ... "
-    adb.exe shell cat /sys/bus/i2c/drivers/tmp103_temp_sensor/2-0070/temp1_input
+    adb shell cat /sys/bus/i2c/drivers/tmp103_temp_sensor/2-0070/temp1_input
 }
 
 #Start the program
-check_adb_devices && adb.exe root || return 1
+check_adb_devices && adb root || return 1
 while [ 1 ]
 do
     menu_show
